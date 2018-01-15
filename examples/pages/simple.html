@@ -10,8 +10,22 @@
 <body>
 
 
+<a 
+    href="#" 
+    class="js-modalx-open"
+    data-emittee='js-modal'
+>Open Modal</a>
 
 
+<div class="modalx js-emittee js-modal">
+    <a 
+        href="#" 
+        class="modalx-close js-modalx-close"
+        data-emittee='js-modal'
+    >
+            Close
+    </a>
+</div>
 
 
 
@@ -19,7 +33,9 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
 <script src="Modalx.js"></script>
+
 <script>
+let myModalx = new Modalx();
 </script>
 
 </body>
