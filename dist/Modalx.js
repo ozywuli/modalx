@@ -40,12 +40,12 @@
         init: function init() {
             $(this.options.opener).on('click', this.openModal.bind(this));
             $(this.options.closer).on('click', this.openModal.bind(this));
+            $(this.options.target).on('click', this.closeModal.bind(this));
             $(this.options.opener + ', ' + this.options.closer).children().css('pointer-events', 'none');
         },
 
         openModal: function openModal(event) {
             event.preventDefault();
-            console.log(1);
             $(event.target).toggleClass(this.options.isVisibleClass);
             var thisTarget = $(event.target).attr('data-emittee');
             $('.' + thisTarget).toggleClass(this.options.isVisibleClass);
@@ -53,8 +53,11 @@
 
         closeModal: function closeModal(event) {
             event.preventDefault();
-            var thisTarget = $(event.target).attr('data-emittee');
-            $('.' + thisTarget).toggleClass(this.options.isVisibleClass);
+            if ($(event.target).closest('.js-modalx-content').length) {
+                console.log('clicking');
+            } else {
+                $(this.options.target).removeClass(this.options.isVisibleClass);
+            }
         }
 
         // A really lightweight plugin wrapper around the constructor,

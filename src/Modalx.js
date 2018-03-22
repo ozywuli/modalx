@@ -39,12 +39,12 @@
         init: function() {
             $(this.options.opener).on('click', this.openModal.bind(this));
             $(this.options.closer).on('click', this.openModal.bind(this));
+            $(this.options.target).on('click', this.closeModal.bind(this))
             $(`${this.options.opener}, ${this.options.closer}`).children().css('pointer-events', 'none');
         },
 
         openModal: function(event) {
             event.preventDefault();
-            console.log(1);
             $(event.target).toggleClass(this.options.isVisibleClass);
             let thisTarget = $(event.target).attr('data-emittee');
             $(`.${thisTarget}`).toggleClass(this.options.isVisibleClass);
@@ -52,8 +52,11 @@
 
         closeModal: function(event) {
             event.preventDefault();
-            let thisTarget = $(event.target).attr('data-emittee');
-            $(`.${thisTarget}`).toggleClass(this.options.isVisibleClass);
+            if ($(event.target).closest('.js-modalx-content').length) {
+                console.log('clicking')
+            } else {
+                $(this.options.target).removeClass(this.options.isVisibleClass);
+            }
         }
     }
 
