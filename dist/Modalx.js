@@ -20,9 +20,9 @@
      * Defaults
      */
     var defaults = {
-        opener: '.js-modalx-open',
-        target: '.js-emittee',
-        closer: '.js-modalx-close',
+        opener: 'js-modalx-open',
+        target: 'js-modalx-target',
+        closer: 'js-modalx-close',
         isVisibleClass: 'is-visible'
 
         /**
@@ -37,26 +37,49 @@
      * Prototype
      */
     Modalx.prototype = {
+        /**
+         * 
+         */
         init: function init() {
-            $(this.options.opener).on('click', this.openModal.bind(this));
-            $(this.options.closer).on('click', this.openModal.bind(this));
-            $(this.options.target).on('click', this.closeModal.bind(this));
-            $(this.options.opener + ', ' + this.options.closer).children().css('pointer-events', 'none');
+            $('.' + this.options.opener).on('click', this.openModal.bind(this));
+            $('.' + this.options.closer).on('click', this.openModal.bind(this));
+            $('.' + this.options.target).on('click', this.closeModal.bind(this));
+            $('.' + this.options.opener + ', .' + this.options.closer).children().css('pointer-events', 'none');
+
+            this.addId();
         },
 
+        /**
+         * 
+         */
+        addId: function addId() {
+            for (var index = 0; index < $('.' + this.options.opener).length; index++) {
+                $('.' + this.options.opener).eq(index).attr('data-modalx-id', '' + index);
+                $('.' + this.options.closer).eq(index).attr('data-modalx-id', '' + index);
+                $('.' + this.options.target).eq(index).attr('data-modalx-id', '' + index);
+            }
+        },
+
+
+        /**
+         * 
+         */
         openModal: function openModal(event) {
             event.preventDefault();
             $(event.target).toggleClass(this.options.isVisibleClass);
-            var thisTarget = $(event.target).attr('data-emittee');
-            $('.' + thisTarget).toggleClass(this.options.isVisibleClass);
+            var thisTargetId = $(event.target).attr('data-modalx-id');
+            $('.' + this.options.target + '[data-modalx-id="' + thisTargetId + '"]').toggleClass(this.options.isVisibleClass);
         },
 
+        /**
+         * 
+         */
         closeModal: function closeModal(event) {
             event.preventDefault();
             if ($(event.target).closest('.js-modalx-content').length) {
                 console.log('clicking');
             } else {
-                $(this.options.target).removeClass(this.options.isVisibleClass);
+                $('.' + this.options.target).removeClass(this.options.isVisibleClass);
             }
         }
 
