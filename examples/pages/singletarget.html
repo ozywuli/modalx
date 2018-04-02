@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Modalx | Ozy Wu-Li</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- Modal 1 -->
+
+<a 
+    href="#" 
+    class="modalx-open js-modalx-open"
+>Open Modal 1</a>
+
+<a 
+    href="#" 
+    class="modalx-open js-modalx-open"
+>Open Modal 2</a>
+
+
+<div 
+    class="modalx js-modalx-target"
+>
+    <a 
+        href="#" 
+        class="modalx-close js-modalx-close"
+    >
+            Close
+    </a>
+    <div class="modalx-content js-modalx-content">
+        <img src="http://placehold.it/100x100" alt="">
+    </div>
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+<script src="Modalx.js"></script>
+
+<script>
+let myModalx = new Modalx({
+    singleModalTarget: true
+});
+</script>
+
+</body>
+</html>

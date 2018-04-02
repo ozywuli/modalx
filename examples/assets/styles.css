@@ -5620,6 +5620,9 @@ html, body {
   color: #FFF;
   font-family: Helvetica, Arial, sans-serif; }
 
+a {
+  display: block; }
+
 .modalx {
   position: fixed;
   top: 0;

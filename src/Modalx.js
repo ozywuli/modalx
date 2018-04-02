@@ -20,7 +20,14 @@
         opener: 'js-modalx-open',
         target: 'js-modalx-target',
         closer: 'js-modalx-close',
-        isVisibleClass: 'is-visible'
+        isVisibleClass: 'is-visible',
+        singleModalTarget: false,
+        openCallback(event) {
+            console.log('open callback');
+        },
+        closeCallback(event) {
+            console.log('close callback');
+        }
     }
 
     /**
@@ -41,7 +48,7 @@
          */
         init: function() {
             $(`.${this.options.opener}`).on('click', this.openModal.bind(this));
-            $(`.${this.options.closer}`).on('click', this.openModal.bind(this));
+            // $(`.${this.options.closer}`).on('click', this.closeModal.bind(this));
             $(`.${this.options.target}`).on('click', this.closeModal.bind(this))
             $(`.${this.options.opener}, .${this.options.closer}`).children().css('pointer-events', 'none');
 
@@ -52,10 +59,16 @@
          * 
          */
         addId() {
-            for (let index = 0; index < $(`.${this.options.opener}`).length; index++) {
-                $(`.${this.options.opener}`).eq(index).attr('data-modalx-id', `${index}`);
-                $(`.${this.options.closer}`).eq(index).attr('data-modalx-id', `${index}`);
-                $(`.${this.options.target}`).eq(index).attr('data-modalx-id', `${index}`);
+            if (!this.options.singleModalTarget) {
+                for (let index = 0; index < $(`.${this.options.opener}`).length; index++) {
+                    $(`.${this.options.opener}`).eq(index).attr('data-modalx-id', `${index}`);
+                    $(`.${this.options.closer}`).eq(index).attr('data-modalx-id', `${index}`);
+                    $(`.${this.options.target}`).eq(index).attr('data-modalx-id', `${index}`);
+                }
+            } else {
+                $(`.${this.options.opener}`).attr('data-modalx-id', `single`);
+                $(`.${this.options.closer}`).attr('data-modalx-id', `single`);
+                $(`.${this.options.target}`).attr('data-modalx-id', `single`);
             }
         },
 
@@ -64,9 +77,15 @@
          */
         openModal: function(event) {
             event.preventDefault();
-            $(event.target).toggleClass(this.options.isVisibleClass);
+            $(event.target).addClass(this.options.isVisibleClass);
             let thisTargetId = $(event.target).attr('data-modalx-id');
-            $(`.${this.options.target}[data-modalx-id="${thisTargetId}"]`).toggleClass(this.options.isVisibleClass);
+
+            $(`.${this.options.target}[data-modalx-id="${thisTargetId}"]`).addClass(this.options.isVisibleClass);
+
+            // Run callback after user opens modal
+            if (this.options.openCallback) {
+                this.options.openCallback(event);
+            }
         },
 
         /**
@@ -75,23 +94,20 @@
         closeModal: function(event) {
             event.preventDefault();
             if ($(event.target).closest('.js-modalx-content').length) {
-                console.log('clicking')
+                console.log('clicking content')
             } else {
+                // remove modal visibility
                 $(`.${this.options.target}`).removeClass(this.options.isVisibleClass);
+
+                // Run callback after user closes modal
+                if (this.options.closeCallback) {
+                    this.options.closeCallback(event);
+                }
             }
+
         }
     }
 
-    // A really lightweight plugin wrapper around the constructor,
-    // preventing against multiple instantiations
-    $.fn[pluginName] = function ( options ) {
-        return this.each(function () {
-            if (!$.data(this, "plugin_" + pluginName)) {
-                $.data(this, "plugin_" + pluginName,
-                new OnToggle( options ));
-            }
-        });
-    };
 
     /*------------------------------------*\
       EXPORT OPTIONS
