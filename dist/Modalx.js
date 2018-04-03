@@ -14,7 +14,12 @@
 // that are not closed properly.
 // the anonymous function protects the `$` alias from name collisions
 ;(function ($, window, document, undefined) {
-    var pluginName = 'Modalx';
+    /**
+     * Plugin namespace
+     */
+    var namespace = {
+        pluginName: 'Modalx'
+    };
 
     /**
      * Defaults
@@ -36,7 +41,7 @@
     /**
      * Plugin Constructor
      */
-    var Modalx = function Modalx(options) {
+    namespace['pluginName'] = function (options) {
         this.options = $.extend({}, defaults, options);
         this.init();
     };
@@ -44,7 +49,7 @@
     /**
      * Prototype
      */
-    Modalx.prototype = {
+    namespace['pluginName'].prototype = {
         /**
          * 
          */
@@ -112,7 +117,7 @@
         /*------------------------------------*\
           EXPORT OPTIONS
         \*------------------------------------*/
-    };module.exports = Modalx;
+    };module.exports = namespace['pluginName'];
 })(jQuery, window, document);
 
 },{}]},{},[1])(1)
