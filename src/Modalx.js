@@ -26,8 +26,10 @@
         opener: 'js-modalx-open',
         target: 'js-modalx-target',
         closer: 'js-modalx-close',
+        content: 'js-modalx-content',
         isVisibleClass: 'is-visible',
         singleModalTarget: false,
+        autoTarget: true,
         openCallback(event) {
             console.log('open callback');
         },
@@ -53,12 +55,14 @@
          * 
          */
         init: function() {
-            $(`.${this.options.opener}`).on('click', this.openModal.bind(this));
+            $(`.${this.options.opener}`).on('click', this.openEventHandler.bind(this));
             // $(`.${this.options.closer}`).on('click', this.closeModal.bind(this));
-            $(`.${this.options.target}`).on('click', this.closeModal.bind(this))
+            $(`.${this.options.target}`).on('click', this.closeEventHandler.bind(this))
             $(`.${this.options.opener}, .${this.options.closer}`).children().css('pointer-events', 'none');
 
-            this.addId();
+            if (this.options.autoTarget) {
+                this.addId();
+            }
         },
 
         /**
@@ -79,14 +83,29 @@
         },
 
         /**
-         * 
+         * Open Event Handler
          */
-        openModal: function(event) {
+        openEventHandler: function(event) {
             event.preventDefault();
             $(event.target).addClass(this.options.isVisibleClass);
             let thisTargetId = $(event.target).attr('data-modalx-id');
 
-            $(`.${this.options.target}[data-modalx-id="${thisTargetId}"]`).addClass(this.options.isVisibleClass);
+            this.openModal(`.${this.options.target}[data-modalx-id="${thisTargetId}"]`);
+        },
+
+        /**
+         * Close Event handler
+         */
+        closeEventHandler: function(event) {
+            event.preventDefault();
+            this.closeModal();
+        },
+
+        /**
+         * Open Modal
+         */
+        openModal(target) {
+            $(target).addClass(this.options.isVisibleClass);
 
             // Run callback after user opens modal
             if (this.options.openCallback) {
@@ -95,23 +114,22 @@
         },
 
         /**
-         * 
+         * Close modal
          */
-        closeModal: function(event) {
-            event.preventDefault();
-            if ($(event.target).closest('.js-modalx-content').length) {
+        closeModal() {
+            if ($(this.options.target).closest(`.${this.options.content}`).length) {
                 console.log('clicking content')
             } else {
                 // remove modal visibility
-                $(`.${this.options.target}`).removeClass(this.options.isVisibleClass);
+                $(`.${this.options.opener}, .${this.options.target}`).removeClass(this.options.isVisibleClass);
 
                 // Run callback after user closes modal
                 if (this.options.closeCallback) {
                     this.options.closeCallback(event);
                 }
             }
+        },
 
-        }
     }
 
 
