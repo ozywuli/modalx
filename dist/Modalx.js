@@ -67,7 +67,7 @@
         },
 
         /**
-         * 
+         * Automatically add IDs
          */
         addId: function addId() {
             if (!this.options.singleModalTarget) {
@@ -100,7 +100,9 @@
          */
         closeEventHandler: function closeEventHandler(event) {
             event.preventDefault();
-            this.closeModal();
+            if ($(event.target).closest('.' + this.options.content).length) {} else {
+                this.closeModal();
+            }
         },
 
         /**
@@ -119,17 +121,13 @@
         /**
          * Close modal
          */
-        closeModal: function closeModal() {
-            if ($(this.options.target).closest('.' + this.options.content).length) {
-                console.log('clicking content');
-            } else {
-                // remove modal visibility
-                $('.' + this.options.opener + ', .' + this.options.target).removeClass(this.options.isVisibleClass);
+        closeModal: function closeModal(event) {
+            // remove modal visibility
+            $('.' + this.options.opener + ', .' + this.options.target).removeClass(this.options.isVisibleClass);
 
-                // Run callback after user closes modal
-                if (this.options.closeCallback) {
-                    this.options.closeCallback(event);
-                }
+            // Run callback after user closes modal
+            if (this.options.closeCallback) {
+                this.options.closeCallback(event);
             }
         }
     };

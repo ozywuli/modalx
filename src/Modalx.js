@@ -60,13 +60,14 @@
             $(`.${this.options.target}`).on('click', this.closeEventHandler.bind(this))
             $(`.${this.options.opener}, .${this.options.closer}`).children().css('pointer-events', 'none');
 
+
             if (this.options.autoTarget) {
                 this.addId();
             }
         },
 
         /**
-         * 
+         * Automatically add IDs
          */
         addId() {
             if (!this.options.singleModalTarget) {
@@ -98,7 +99,12 @@
          */
         closeEventHandler: function(event) {
             event.preventDefault();
-            this.closeModal();
+            if ($(event.target).closest(`.${this.options.content}`).length) {
+
+            } else {
+                this.closeModal();    
+            }
+            
         },
 
         /**
@@ -116,17 +122,13 @@
         /**
          * Close modal
          */
-        closeModal() {
-            if ($(this.options.target).closest(`.${this.options.content}`).length) {
-                console.log('clicking content')
-            } else {
-                // remove modal visibility
-                $(`.${this.options.opener}, .${this.options.target}`).removeClass(this.options.isVisibleClass);
+        closeModal(event) {
+            // remove modal visibility
+            $(`.${this.options.opener}, .${this.options.target}`).removeClass(this.options.isVisibleClass);
 
-                // Run callback after user closes modal
-                if (this.options.closeCallback) {
-                    this.options.closeCallback(event);
-                }
+            // Run callback after user closes modal
+            if (this.options.closeCallback) {
+                this.options.closeCallback(event);
             }
         },
 
