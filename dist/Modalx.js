@@ -72,14 +72,23 @@
         addId: function addId() {
             if (!this.options.singleModalTarget) {
                 for (var index = 0; index < $('.' + this.options.opener).length; index++) {
-                    $('.' + this.options.opener).eq(index).attr('data-modalx-id', '' + index);
-                    $('.' + this.options.closer).eq(index).attr('data-modalx-id', '' + index);
-                    $('.' + this.options.target).eq(index).attr('data-modalx-id', '' + index);
+                    $('\n                        .' + this.options.opener + ':eq(' + index + '),\n                        .' + this.options.closer + ':eq(' + index + '), \n                        .' + this.options.target + ':eq(' + index + ')\n                    ').attr('data-modalx-id', '' + index);
                 }
             } else {
-                $('.' + this.options.opener).attr('data-modalx-id', 'single');
-                $('.' + this.options.closer).attr('data-modalx-id', 'single');
-                $('.' + this.options.target).attr('data-modalx-id', 'single');
+                $('\n                    .' + this.options.opener + ', \n                    .' + this.options.closer + ', \n                    .' + this.options.target + '\n                ').attr('data-modalx-id', 'single');
+            }
+        },
+
+
+        /**
+         * Open Modal
+         */
+        openModal: function openModal(target, event) {
+            $(target).addClass(this.options.isVisibleClass);
+
+            // Run callback after user opens modal
+            if (this.options.openCallback) {
+                this.options.openCallback(target, event);
             }
         },
 
@@ -92,7 +101,7 @@
             $(event.target).addClass(this.options.isVisibleClass);
             var thisTargetId = $(event.target).attr('data-modalx-id');
 
-            this.openModal('.' + this.options.target + '[data-modalx-id="' + thisTargetId + '"]');
+            this.openModal('.' + this.options.target + '[data-modalx-id="' + thisTargetId + '"]', event);
         },
 
         /**
@@ -104,19 +113,6 @@
                 this.closeModal();
             }
         },
-
-        /**
-         * Open Modal
-         */
-        openModal: function openModal(target) {
-            $(target).addClass(this.options.isVisibleClass);
-
-            // Run callback after user opens modal
-            if (this.options.openCallback) {
-                this.options.openCallback(event);
-            }
-        },
-
 
         /**
          * Close modal
