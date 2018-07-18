@@ -31,10 +31,10 @@
         singleModalTarget: false,
         autoTarget: true,
         openCallback(event) {
-            console.log('open callback');
+            // console.log('open callback');
         },
         closeCallback(event) {
-            console.log('close callback');
+            // console.log('close callback');
         }
     }
 
@@ -56,10 +56,10 @@
          */
         init: function() {
             $(`.${this.options.opener}`).on('click', this.openEventHandler.bind(this));
-            // $(`.${this.options.closer}`).on('click', this.closeModal.bind(this));
+            $(`.${this.options.closer}`).on('click', this.closeModal.bind(this));
             $(`.${this.options.target}`).on('click', this.closeEventHandler.bind(this))
-            $(`.${this.options.opener}, .${this.options.closer}`).children().css('pointer-events', 'none');
 
+            $(`.${this.options.opener}, .${this.options.closer}`).children().css('pointer-events', 'none');
 
             if (this.options.autoTarget) {
                 this.addId();

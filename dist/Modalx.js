@@ -33,10 +33,10 @@
         singleModalTarget: false,
         autoTarget: true,
         openCallback: function openCallback(event) {
-            console.log('open callback');
+            // console.log('open callback');
         },
         closeCallback: function closeCallback(event) {
-            console.log('close callback');
+            // console.log('close callback');
         }
     };
 
