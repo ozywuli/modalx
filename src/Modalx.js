@@ -31,10 +31,10 @@
         singleModalTarget: false,
         autoTarget: true,
         openCallback(event) {
-            console.log('open callback');
+            // console.log('open callback');
         },
         closeCallback(event) {
-            console.log('close callback');
+            // console.log('close callback');
         }
     }
 
@@ -56,8 +56,9 @@
          */
         init: function() {
             $(`.${this.options.opener}`).on('click', this.openEventHandler.bind(this));
-            // $(`.${this.options.closer}`).on('click', this.closeModal.bind(this));
+            $(`.${this.options.closer}`).on('click', this.closeModal.bind(this));
             $(`.${this.options.target}`).on('click', this.closeEventHandler.bind(this))
+
             $(`.${this.options.opener}, .${this.options.closer}`).children().css('pointer-events', 'none');
 
             if (this.options.autoTarget) {
@@ -66,19 +67,35 @@
         },
 
         /**
-         * 
+         * Automatically add IDs
          */
         addId() {
             if (!this.options.singleModalTarget) {
                 for (let index = 0; index < $(`.${this.options.opener}`).length; index++) {
-                    $(`.${this.options.opener}`).eq(index).attr('data-modalx-id', `${index}`);
-                    $(`.${this.options.closer}`).eq(index).attr('data-modalx-id', `${index}`);
-                    $(`.${this.options.target}`).eq(index).attr('data-modalx-id', `${index}`);
+                    $(`
+                        .${this.options.opener}:eq(${index}),
+                        .${this.options.closer}:eq(${index}), 
+                        .${this.options.target}:eq(${index})
+                    `).attr('data-modalx-id', `${index}`);
                 }
             } else {
-                $(`.${this.options.opener}`).attr('data-modalx-id', `single`);
-                $(`.${this.options.closer}`).attr('data-modalx-id', `single`);
-                $(`.${this.options.target}`).attr('data-modalx-id', `single`);
+                $(`
+                    .${this.options.opener}, 
+                    .${this.options.closer}, 
+                    .${this.options.target}
+                `).attr('data-modalx-id', `single`);
+            }
+        },
+
+        /**
+         * Open Modal
+         */
+        openModal(target, event) {
+            $(target).addClass(this.options.isVisibleClass);
+
+            // Run callback after user opens modal
+            if (this.options.openCallback) {
+                this.options.openCallback(target, event);    
             }
         },
 
@@ -90,7 +107,7 @@
             $(event.target).addClass(this.options.isVisibleClass);
             let thisTargetId = $(event.target).attr('data-modalx-id');
 
-            this.openModal(`.${this.options.target}[data-modalx-id="${thisTargetId}"]`);
+            this.openModal(`.${this.options.target}[data-modalx-id="${thisTargetId}"]`, event);
         },
 
         /**
@@ -98,35 +115,24 @@
          */
         closeEventHandler: function(event) {
             event.preventDefault();
-            this.closeModal();
-        },
+            if ($(event.target).closest(`.${this.options.content}`).length) {
 
-        /**
-         * Open Modal
-         */
-        openModal(target) {
-            $(target).addClass(this.options.isVisibleClass);
-
-            // Run callback after user opens modal
-            if (this.options.openCallback) {
-                this.options.openCallback(event);
+            } else {
+                this.closeModal();    
             }
+            
         },
 
         /**
          * Close modal
          */
-        closeModal() {
-            if ($(this.options.target).closest(`.${this.options.content}`).length) {
-                console.log('clicking content')
-            } else {
-                // remove modal visibility
-                $(`.${this.options.opener}, .${this.options.target}`).removeClass(this.options.isVisibleClass);
+        closeModal(event) {
+            // remove modal visibility
+            $(`.${this.options.opener}, .${this.options.target}`).removeClass(this.options.isVisibleClass);
 
-                // Run callback after user closes modal
-                if (this.options.closeCallback) {
-                    this.options.closeCallback(event);
-                }
+            // Run callback after user closes modal
+            if (this.options.closeCallback) {
+                this.options.closeCallback(event);
             }
         },
 
