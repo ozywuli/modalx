@@ -23,16 +23,33 @@
      * Defaults
      */
     let defaults = {
+        // The element that triggers the modal open
         opener: 'js-modalx-open',
+        
+        // The modal
         target: 'js-modalx-target',
+        
+        // The elemtn that triggers the modal close
         closer: 'js-modalx-close',
+
+        // Content inside the modal
         content: 'js-modalx-content',
+        
+        // The name of the class for the visible state
         isVisibleClass: 'is-visible',
+
+        // Use one modal for multiple instances of an opener
         singleModalTarget: false,
+
+        // Automatically id openers+targets
         autoTarget: true,
+
+        // Callback function after a modal opens
         openCallback(event) {
             // console.log('open callback');
         },
+
+        // Callback function after a modal closes
         closeCallback(event) {
             // console.log('close callback');
         }

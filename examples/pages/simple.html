@@ -5,54 +5,64 @@
     <title>Modalx | Ozy Wu-Li</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-2.6.1.css">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+<div id="qunit"></div>
+<div class="container">
 
-<!-- Modal 1 -->
+    <!-- Modal 1 -->
 
-<a 
-    href="#" 
-    class="modalx-open js-modalx-open"
->Open Modal 1</a>
-
-
-<div 
-    class="modalx js-modalx-target"
->
+    <!-- Modal 1 opener -->
     <a 
         href="#" 
-        class="modalx-close js-modalx-close"
+        class="modalx-open js-modalx-open"
+    >Open Modal 1</a>
+
+
+    <!-- Modal 1 target -->
+    <div class="modalx js-modalx-target">
+        <a 
+            href="#" 
+            class="modalx-close js-modalx-close"
+        >Close</a>
+
+        <div class="modalx-content js-modalx-content">
+            <img src="http://placehold.it/100x100" alt="">
+        </div>
+
+        <div class="outside-content">outside content</div>
+    </div>
+
+
+    <!-- Modal 2 -->
+
+    <!-- Modal 2 openers -->
+    <a 
+        href="#" 
+        class="modalx-open js-modalx-open"
+    >Open Modal 2</a>
+
+    <!-- Modal 2 target -->
+    <div 
+        class="modalx js-modalx-target"
     >
-            Close
-    </a>
-    <div class="modalx-content js-modalx-content">
-        <img src="http://placehold.it/100x100" alt="">
+        <a 
+            href="#" 
+            class="modalx-close js-modalx-close"
+        >
+                Close
+        </a>
+        <div class="modalx-content js-modalx-content">
+            <img src="http://placehold.it/200x200" alt="">
+        </div>
+
+        <div class="outside-content">outside content</div>
     </div>
 </div>
 
 
-<!-- Modal 2 -->
-
-<a 
-    href="#" 
-    class="modalx-open js-modalx-open"
->Open Modal 2</a>
-
-
-<div 
-    class="modalx js-modalx-target"
->
-    <a 
-        href="#" 
-        class="modalx-close js-modalx-close"
-    >
-            Close
-    </a>
-    <div class="modalx-content js-modalx-content">
-        <img src="http://placehold.it/200x200" alt="">
-    </div>
-</div>
 
 
 
@@ -63,6 +73,11 @@
 <script>
 let myModalx = new Modalx();
 </script>
+
+<script src="https://code.jquery.com/qunit/qunit-2.6.1.js"></script>
+<script src="https://unpkg.com/qunit-dom/dist/qunit-dom.js"></script>
+
+<script src="tests.js"></script>
 
 </body>
 </html>

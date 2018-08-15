@@ -25,16 +25,34 @@
      * Defaults
      */
     var defaults = {
+        // The element that triggers the modal open
         opener: 'js-modalx-open',
+
+        // The modal
         target: 'js-modalx-target',
+
+        // The elemtn that triggers the modal close
         closer: 'js-modalx-close',
+
+        // Content inside the modal
         content: 'js-modalx-content',
+
+        // The name of the class for the visible state
         isVisibleClass: 'is-visible',
+
+        // Use one modal for multiple instances of an opener
         singleModalTarget: false,
+
+        // Automatically id openers+targets
         autoTarget: true,
+
+        // Callback function after a modal opens
         openCallback: function openCallback(event) {
             // console.log('open callback');
         },
+
+
+        // Callback function after a modal closes
         closeCallback: function closeCallback(event) {
             // console.log('close callback');
         }
@@ -57,8 +75,9 @@
          */
         init: function init() {
             $('.' + this.options.opener).on('click', this.openEventHandler.bind(this));
-            // $(`.${this.options.closer}`).on('click', this.closeModal.bind(this));
+            $('.' + this.options.closer).on('click', this.closeModal.bind(this));
             $('.' + this.options.target).on('click', this.closeEventHandler.bind(this));
+
             $('.' + this.options.opener + ', .' + this.options.closer).children().css('pointer-events', 'none');
 
             if (this.options.autoTarget) {
@@ -126,7 +145,8 @@
                 this.options.closeCallback(event);
             }
         }
-    };
+    }; // prototype
+
 
     /*------------------------------------*\
       EXPORT OPTIONS
